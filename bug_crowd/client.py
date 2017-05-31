@@ -52,9 +52,10 @@ class BugcrowdClient(object):
                 yield submission
         async_fetches = []
         for offset in range(step, total_hits + step, step):
-            params.update({'offset': offset})
+            request_params = params.copy()
+            request_params.update({'offset': offset})
             async_fetches.append(
-                self.session.get(submissions_uri, params=params.copy()))
+                self.session.get(submissions_uri, params=request_params))
         for future_fetch in async_fetches:
             fetch = future_fetch.result()
             fetch.raise_for_status()
