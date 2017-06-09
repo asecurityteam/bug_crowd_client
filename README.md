@@ -1,4 +1,6 @@
 # Bugcrowd api client.
+[![pypi-version-image]][pypi]
+
 
 This package provides an implementation of the [Bugcrowd api](https://docs.bugcrowd.com/v1.0/docs/bounty).
 
@@ -106,3 +108,7 @@ pip install bug-crowd-api-client
     ).result()
     resp.raise_for_status()
 ```
+
+
+[pypi-version-image]: https://img.shields.io/pypi/v/bug-crowd-api-client.svg
+[pypi]: https://pypi.python.org/pypi/bug-crowd-api-client
