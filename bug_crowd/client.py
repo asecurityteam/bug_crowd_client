@@ -127,8 +127,7 @@ class BugcrowdClient(object):
 
 
 def _convert_datetime_to_submission_creation_format(date_time):
-    """ XXX: Remove this when Bugcrowd accepts isoformat. """
-    return date_time.strftime('%d-%m-%Y %H:%M:%S')
+    return date_time.isoformat()
 
 
 def get_uri_for_bounty_submission(submission):
