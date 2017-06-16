@@ -47,21 +47,21 @@ class BugcrowdClient(object):
         submissions += data['submissions']
         total = data['meta']['count']
         total_hits = data['meta']['total_hits']
-        if total >= total_hits:
-            for submission in submissions:
-                yield submission
-        async_fetches = []
-        for offset in range(step, total_hits + step, step):
-            request_params = params.copy()
-            request_params.update({'offset': offset})
-            async_fetches.append(
-                self.session.get(submissions_uri, params=request_params))
-        for future_fetch in async_fetches:
-            fetch = future_fetch.result()
-            fetch.raise_for_status()
-            data = fetch.json()
-            for submission in data['submissions']:
-                yield submission
+        for submission in submissions:
+            yield submission
+        if total < total_hits:
+            async_fetches = []
+            for offset in range(step, total_hits + step, step):
+                request_params = params.copy()
+                request_params.update({'offset': offset})
+                async_fetches.append(
+                    self.session.get(submissions_uri, params=request_params))
+            for future_fetch in async_fetches:
+                fetch = future_fetch.result()
+                fetch.raise_for_status()
+                data = fetch.json()
+                for submission in data['submissions']:
+                    yield submission
 
     def get_api_uri(self, path):
         """ Returns the full api uri for the given path. """
