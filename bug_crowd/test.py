@@ -156,8 +156,40 @@ class BugcrowdClientTest(unittest.TestCase):
         submission = get_example_submission()
         self.client.comment_on_submission(submission, 'a comment',
                                           comment_type=comment_type)
-        name, args, kwargs = mocked_method.mock_calls[0]
+        kwargs = mocked_method.mock_calls[0][-1]
         self.assertEqual(kwargs['json']['comment']['type'], comment_type)
+
+    @mock.patch.object(requests.Session, 'post')
+    def test_transition_submission(self, mocked_method):
+        """ tests that the transition_submission method works as expected. """
+        expected_state = 'resolved'
+        submission = get_example_submission()
+        expected_uri = uri = self.client.get_api_uri_for_submission(
+            submission) + '/transition'
+        self.client.transition_submission(submission, expected_state)
+        mocked_method.assert_called_once_with(
+            expected_uri, json={'substate': expected_state})
+
+    @mock.patch.object(requests.Session, 'post')
+    def test_transition_submission_uses_duplicate_of(self, mocked_method):
+        expected_state = 'duplicate'
+        duplicate_of = 'original-%s' % uuid.uuid4()
+        submission = get_example_submission()
+        self.client.transition_submission(submission, expected_state,
+                                          duplicate_of=duplicate_of)
+        mocked_method.assert_called_once_with(
+            mock.ANY,
+            json={'substate': expected_state, 'duplicate_of': duplicate_of})
+
+    @mock.patch.object(requests.Session, 'post')
+    def test_transition_submission_checks_duplicate_of(self, mocked_method):
+        """ tests that the transition_submission method checks that a
+            duplicate_of is required for transitioning to a duplicate state.
+        """
+        state = 'duplicate'
+        submission = get_example_submission()
+        with self.assertRaises(ValueError):
+            self.client.transition_submission(submission, state)
 
 
 def setup_example_bounties_response(mocked_method, bounties=None):
