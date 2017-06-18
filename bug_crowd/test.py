@@ -111,13 +111,15 @@ class BugcrowdClientTest(unittest.TestCase):
         """ tests that the create_submission method works as expected. """
         submitted_at = datetime.datetime(
             year=2001, month=1, day=1, minute=1, second=1)
-        fields = {'title': str(uuid.uuid4()), 'submitted_at': submitted_at}
-        self.client.create_submission(self._bounty, fields)
-        expected_url = self.client.get_api_uri_for_bounty_submissions(
-            self._bounty)
-        fields.update(submitted_at=submitted_at.isoformat())
-        mocked_method.assert_called_once_with(
-            expected_url, json={'submission': fields})
+        for submitted_at in [submitted_at, submitted_at.isoformat()]:
+            fields = {'title': str(uuid.uuid4()), 'submitted_at': submitted_at}
+            self.client.create_submission(self._bounty, fields)
+            expected_url = self.client.get_api_uri_for_bounty_submissions(
+                self._bounty)
+            if isinstance(submitted_at, datetime.datetime):
+                fields.update(submitted_at=submitted_at.isoformat())
+            mocked_method.assert_called_with(
+                expected_url, json={'submission': fields})
 
     def test_create_submission_checks_required_fields(self):
         """ tests that the create_submission method checks that required
