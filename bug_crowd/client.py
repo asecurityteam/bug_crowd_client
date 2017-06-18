@@ -89,6 +89,10 @@ class BugcrowdClient(object):
         if len(has_req_fields) != 2:
             raise ValueError('The %s field is required' %
                              (required_fields - has_req_fields))
+        submitted_at = submission_fields['submitted_at']
+        if hasattr(submitted_at, 'isoformat'):
+            submission_fields = submission_fields.copy()
+            submission_fields['submitted_at'] = submitted_at.isoformat()
         return self.session.post(uri, json={'submission': submission_fields})
 
     def update_submission(self, submission, **kwargs):
