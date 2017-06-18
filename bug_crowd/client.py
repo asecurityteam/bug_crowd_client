@@ -85,7 +85,7 @@ class BugcrowdClient(object):
         """
         uri = self.get_api_uri_for_bounty_submissions(_get_uuid(bounty))
         required_fields = {'title', 'submitted_at'}
-        has_req_fields = required_fields | set(submission_fields.keys())
+        has_req_fields = required_fields & set(submission_fields.keys())
         if len(has_req_fields) != 2:
             raise ValueError('The %s field is required' %
                              (required_fields - has_req_fields))
