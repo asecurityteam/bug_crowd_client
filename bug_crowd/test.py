@@ -125,6 +125,40 @@ class BugcrowdClientTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.client.create_submission(self._bounty, fields)
 
+    @mock.patch.object(requests.Session, 'put')
+    def test_update_submission(self, mocked_method):
+        """ tests that the update_submission method works as expected. """
+        fields = {'title': uuid.uuid4(),
+                  'custom_fields': {'example': 'value'}, }
+        submission = get_example_submission()
+        expected_uri = self.client.get_api_uri_for_submission(submission)
+        self.client.update_submission(submission, **fields)
+        mocked_method.assert_called_once_with(
+            expected_uri, json={'submission': fields})
+
+    @mock.patch.object(requests.Session, 'post')
+    def test_comment_on_submission(self, mocked_method):
+        """ tests that the comment_on_submission method works as expected. """
+        comment_text = uuid.uuid4()
+        expected_json = {'comment': {'body': comment_text, 'type': 'note', }}
+        submission = get_example_submission()
+        expected_uri = uri = self.client.get_api_uri_for_submission(
+            submission) + '/comments'
+        self.client.comment_on_submission(submission, comment_text)
+        mocked_method.assert_called_once_with(expected_uri, json=expected_json)
+
+    @mock.patch.object(requests.Session, 'post')
+    def test_comment_on_submission_uses_comment_type(self, mocked_method):
+        """ tests that the comment_on_submission method uses the supplied
+            comment type.
+        """
+        comment_type = 'tester_message'
+        submission = get_example_submission()
+        self.client.comment_on_submission(submission, 'a comment',
+                                          comment_type=comment_type)
+        name, args, kwargs = mocked_method.mock_calls[0]
+        self.assertEqual(kwargs['json']['comment']['type'], comment_type)
+
 
 def setup_example_bounties_response(mocked_method, bounties=None):
     """ setups up an example bounties response. """
