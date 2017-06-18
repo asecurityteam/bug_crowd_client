@@ -109,11 +109,13 @@ class BugcrowdClientTest(unittest.TestCase):
     @mock.patch.object(requests.Session, 'post')
     def test_create_submission(self, mocked_method):
         """ tests that the create_submission method works as expected. """
-        fields = {'title': uuid.uuid4(),
-                  'submitted_at': datetime.datetime.now().isoformat()}
+        submitted_at = datetime.datetime(
+            year=2001, month=1, day=1, minute=1, second=1)
+        fields = {'title': str(uuid.uuid4()), 'submitted_at': submitted_at}
         self.client.create_submission(self._bounty, fields)
         expected_url = self.client.get_api_uri_for_bounty_submissions(
             self._bounty)
+        fields.update(submitted_at=submitted_at.isoformat())
         mocked_method.assert_called_once_with(
             expected_url, json={'submission': fields})
 
@@ -128,7 +130,7 @@ class BugcrowdClientTest(unittest.TestCase):
     @mock.patch.object(requests.Session, 'put')
     def test_update_submission(self, mocked_method):
         """ tests that the update_submission method works as expected. """
-        fields = {'title': uuid.uuid4(),
+        fields = {'title': str(uuid.uuid4()),
                   'custom_fields': {'example': 'value'}, }
         submission = get_example_submission()
         expected_uri = self.client.get_api_uri_for_submission(submission)
@@ -139,7 +141,7 @@ class BugcrowdClientTest(unittest.TestCase):
     @mock.patch.object(requests.Session, 'post')
     def test_comment_on_submission(self, mocked_method):
         """ tests that the comment_on_submission method works as expected. """
-        comment_text = uuid.uuid4()
+        comment_text = str(uuid.uuid4())
         expected_json = {'comment': {'body': comment_text, 'type': 'note', }}
         submission = get_example_submission()
         expected_uri = uri = self.client.get_api_uri_for_submission(
