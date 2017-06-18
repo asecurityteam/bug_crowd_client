@@ -6,7 +6,34 @@ import mock
 import requests
 from six.moves.urllib.parse import quote as url_quote
 
-from .client import BugcrowdClient
+from .client import (
+    BugcrowdClient,
+    get_uri_for_bounty_submission,
+    _convert_datetime_to_submission_creation_format,
+)
+
+
+class ClientTest(unittest.TestCase):
+    """ Tests for the client module. """
+
+    def test_get_uri_for_bounty_submission(self):
+        """ tests that the get_uri_for_bounty_submission method works
+            as expected.
+        """
+        self.client = BugcrowdClient('api-token')
+        submission = get_example_submission()
+        submission['bounty_code'] = '<bounty_code>'
+        submission['reference_number'] = '<reference_number>'
+        expected_uri = 'https://tracker.bugcrowd.com/%s/submissions/%s' % (
+            url_quote(submission['bounty_code']),
+            url_quote(submission['reference_number']))
+        self.assertEqual(
+            get_uri_for_bounty_submission(submission), expected_uri)
+
+    def test__convert_datetime_to_submission_creation_format(self):
+        date = datetime.datetime(year=2002, month=1, day=1)
+        self.assertEqual(_convert_datetime_to_submission_creation_format(date),
+                         date.isoformat())
 
 
 class BugcrowdClientTest(unittest.TestCase):
@@ -146,7 +173,7 @@ class BugcrowdClientTest(unittest.TestCase):
         comment_text = str(uuid.uuid4())
         expected_json = {'comment': {'body': comment_text, 'type': 'note', }}
         submission = get_example_submission()
-        expected_uri = uri = self.client.get_api_uri_for_submission(
+        expected_uri = self.client.get_api_uri_for_submission(
             submission) + '/comments'
         self.client.comment_on_submission(submission, comment_text)
         mocked_method.assert_called_once_with(expected_uri, json=expected_json)
@@ -168,7 +195,7 @@ class BugcrowdClientTest(unittest.TestCase):
         """ tests that the transition_submission method works as expected. """
         expected_state = 'resolved'
         submission = get_example_submission()
-        expected_uri = uri = self.client.get_api_uri_for_submission(
+        expected_uri = self.client.get_api_uri_for_submission(
             submission) + '/transition'
         self.client.transition_submission(submission, expected_state)
         mocked_method.assert_called_once_with(
@@ -244,6 +271,9 @@ def get_example_submission(**kwargs):
     return {
         'uuid': 'submission-uuid-%s' % kwargs.get('uuid', uuid.uuid4()),
         'title': 'example',
+        'bounty_code': kwargs.get('bounty_code', 'code-%s' % uuid.uuid4()),
+        'reference_number': kwargs.get('reference_number',
+                                       'ref-n-%s' % uuid.uuid4()),
     }
 
 
@@ -253,6 +283,8 @@ def setup_mock_response(mocked_method, json_contents, headers=None):
     mocked_method.return_value = m_async_request
     m_response = mock.Mock(name='response')
     m_response.json.side_effect = json_contents
+    if headers is not None:
+        m_response.headers = headers
     m_async_request.result.return_value = m_response
     return mocked_method
 
