@@ -7,4 +7,5 @@ setup(
     pbr=True,
     platforms=['any'],
     zip_safe=False,
+    test_suite='bug_crowd.test',
 )
