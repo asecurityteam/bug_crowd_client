@@ -123,6 +123,10 @@ class BugcrowdClient(object):
         duplicate_of = kwargs.get('duplicate_of', None)
         if duplicate_of:
             payload['duplicate_of'] = duplicate_of
+        if state == 'duplicate' and duplicate_of is None:
+            raise ValueError(
+                'The duplicate_of field is required when transitioning '
+                'a submission to a duplicate status.')
         return self.session.post(uri, json=payload)
 
 
