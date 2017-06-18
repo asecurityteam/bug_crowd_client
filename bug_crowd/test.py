@@ -27,29 +27,29 @@ class BugcrowdClientTest(unittest.TestCase):
         """ tests that the get_api_uri_for_bounty_submissions method works
             as expected.
         """
-        expected_url = self.client.base_uri + (
+        expected_uri = self.client.base_uri + (
             'bounties/%s/submissions' % url_quote(self._bounty['uuid']))
-        url = self.client.get_api_uri_for_bounty_submissions(self._bounty)
-        self.assertEqual(url, expected_url)
+        uri = self.client.get_api_uri_for_bounty_submissions(self._bounty)
+        self.assertEqual(uri, expected_uri)
 
     def test_get_api_uri_for_submission(self):
         """ tests that the get_api_uri_for_submission method works
             as expected.
         """
         submission = get_example_submission()
-        expected_url = self.client.base_uri + (
+        expected_uri = self.client.base_uri + (
             'submissions/%s' % url_quote(submission['uuid']))
         self.assertEqual(
-            self.client.get_api_uri_for_submission(submission), expected_url)
+            self.client.get_api_uri_for_submission(submission), expected_uri)
 
     @mock.patch.object(requests.Session, 'get')
     def test_get_bounties(self, mocked_method):
         """ tests that the get_bounties method works as expected."""
-        url = self.client.get_api_uri('bounties')
+        uri = self.client.get_api_uri('bounties')
         expected_bounties = [self._bounty]
         setup_example_bounties_response(mocked_method, expected_bounties)
         self.assertEqual(self.client.get_bounties(), expected_bounties)
-        mocked_method.assert_called_once_with(url)
+        mocked_method.assert_called_once_with(uri)
 
     @mock.patch.object(requests.Session, 'get')
     def test_get_submissions_default_params(self, mocked_method):
@@ -58,9 +58,9 @@ class BugcrowdClientTest(unittest.TestCase):
         """
         expected_params = {'sort': 'newest', 'offset': 0}
         setup_example_submission_response(mocked_method)
-        url = self.client.get_api_uri_for_bounty_submissions(self._bounty)
+        uri = self.client.get_api_uri_for_bounty_submissions(self._bounty)
         list(self.client.get_submissions(self._bounty))
-        mocked_method.assert_called_once_with(url, params=expected_params)
+        mocked_method.assert_called_once_with(uri, params=expected_params)
 
     @mock.patch.object(requests.Session, 'get')
     def test_get_submissions_uses_given_params(self, mocked_method):
@@ -114,12 +114,12 @@ class BugcrowdClientTest(unittest.TestCase):
         for submitted_at in [submitted_at, submitted_at.isoformat()]:
             fields = {'title': str(uuid.uuid4()), 'submitted_at': submitted_at}
             self.client.create_submission(self._bounty, fields)
-            expected_url = self.client.get_api_uri_for_bounty_submissions(
+            expected_uri = self.client.get_api_uri_for_bounty_submissions(
                 self._bounty)
             if isinstance(submitted_at, datetime.datetime):
                 fields.update(submitted_at=submitted_at.isoformat())
             mocked_method.assert_called_with(
-                expected_url, json={'submission': fields})
+                expected_uri, json={'submission': fields})
 
     def test_create_submission_checks_required_fields(self):
         """ tests that the create_submission method checks that required
