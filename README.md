@@ -1,4 +1,5 @@
 # Bugcrowd api client.
+[![travis-status-image]][travis]
 [![pypi-version-image]][pypi]
 
 
@@ -109,6 +110,8 @@ pip install bug-crowd-api-client
     resp.raise_for_status()
 ```
 
+[travis-status-image]: https://secure.travis-ci.org/asecurityteam/bug_crowd_client.svg?branch=master
+[travis]: http://travis-ci.org/asecurityteam/bug_crowd_client?branch=master
 
 [pypi-version-image]: https://img.shields.io/pypi/v/bug-crowd-api-client.svg
 [pypi]: https://pypi.python.org/pypi/bug-crowd-api-client
