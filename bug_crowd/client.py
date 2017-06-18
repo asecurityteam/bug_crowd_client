@@ -51,7 +51,7 @@ class BugcrowdClient(object):
             yield submission
         if total < total_hits:
             async_fetches = []
-            for offset in range(step, total_hits + step, step):
+            for offset in range(step, total_hits, step):
                 request_params = params.copy()
                 request_params.update({'offset': offset})
                 async_fetches.append(
