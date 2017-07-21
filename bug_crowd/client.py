@@ -99,7 +99,7 @@ class BugcrowdClient(object):
         """ Returns a future request updating the given submission. """
         uri = self.get_api_uri_for_submission(submission)
         fields = {}
-        for key in ['title', 'internal_bug_type', 'custom_fields']:
+        for key in ['title', 'vrt_id', 'custom_fields', 'bug_url']:
             val = kwargs.get(key, None)
             if val:
                 fields[key] = val
