@@ -50,7 +50,7 @@ pip install bug-crowd-api-client
     submission_fields = {
         'substate': 'unresolved',
         'title': 'Example submission',
-        'submitted_at': '11-11-2017 00:00:00',
+        'submitted_at': datetime.datetime.now(),
         'description_markdown': 'Example description',
     }
 
