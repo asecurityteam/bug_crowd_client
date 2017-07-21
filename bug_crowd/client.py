@@ -18,7 +18,7 @@ class BugcrowdClient(object):
         self.session = FuturesSession(max_workers=5)
         self.base_uri = 'https://api.bugcrowd.com/'
         self.session.headers.update({
-            'Accept': 'application/vnd.bugcrowd.v2+json',
+            'Accept': 'application/vnd.bugcrowd.v3+json',
             'Authorization': 'Token %s' % self._api_token,
             'user-agent': 'Bugcrowd Python Client',
         })

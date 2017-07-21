@@ -44,6 +44,12 @@ class BugcrowdClientTest(unittest.TestCase):
         self.client = BugcrowdClient(self.api_token)
         self._bounty = get_example_bounty()
 
+    def test_accept_header(self):
+        """ tests that the accept header of the session is correct. """
+        self.assertEqual(
+            self.client.session.headers.get('accept'),
+            'application/vnd.bugcrowd.v3+json')
+
     def test_get_api_uri(self):
         """ tests that the get_api_uri method works as expected. """
         path = '<eg>'
