@@ -70,7 +70,7 @@ pip install bug-crowd-api-client
     resp = client.update_submission(
         submission,
         title='A new title',
-        internal_bug_type='xss',
+        vrt_id='cross_site_scripting_xss',
         custom_fields={'example': 'value'},
     ).result()
     resp.raise_for_status()
