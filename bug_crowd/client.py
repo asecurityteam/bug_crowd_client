@@ -112,7 +112,7 @@ class BugcrowdClient(object):
         uri = self.get_api_uri_for_submission(submission) + '/comments'
         payload = {
             'comment': {
-                'body': comment_text,
+                'body_markdown': comment_text,
                 'type': comment_type,
             }
         }
