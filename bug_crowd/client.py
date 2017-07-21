@@ -18,7 +18,7 @@ class BugcrowdClient(object):
         self.session = FuturesSession(max_workers=5)
         self.base_uri = 'https://api.bugcrowd.com/'
         self.session.headers.update({
-            'Accept': 'application/vnd.bugcrowd.v2+json',
+            'Accept': 'application/vnd.bugcrowd.v3+json',
             'Authorization': 'Token %s' % self._api_token,
             'user-agent': 'Bugcrowd Python Client',
         })
@@ -99,7 +99,7 @@ class BugcrowdClient(object):
         """ Returns a future request updating the given submission. """
         uri = self.get_api_uri_for_submission(submission)
         fields = {}
-        for key in ['title', 'internal_bug_type', 'custom_fields']:
+        for key in ['title', 'vrt_id', 'custom_fields', 'bug_url']:
             val = kwargs.get(key, None)
             if val:
                 fields[key] = val
@@ -112,7 +112,7 @@ class BugcrowdClient(object):
         uri = self.get_api_uri_for_submission(submission) + '/comments'
         payload = {
             'comment': {
-                'body': comment_text,
+                'body_markdown': comment_text,
                 'type': comment_type,
             }
         }

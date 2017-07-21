@@ -44,6 +44,12 @@ class BugcrowdClientTest(unittest.TestCase):
         self.client = BugcrowdClient(self.api_token)
         self._bounty = get_example_bounty()
 
+    def test_accept_header(self):
+        """ tests that the accept header of the session is correct. """
+        self.assertEqual(
+            self.client.session.headers.get('accept'),
+            'application/vnd.bugcrowd.v3+json')
+
     def test_get_api_uri(self):
         """ tests that the get_api_uri method works as expected. """
         path = '<eg>'
@@ -171,7 +177,8 @@ class BugcrowdClientTest(unittest.TestCase):
     def test_comment_on_submission(self, mocked_method):
         """ tests that the comment_on_submission method works as expected. """
         comment_text = str(uuid.uuid4())
-        expected_json = {'comment': {'body': comment_text, 'type': 'note', }}
+        expected_json = {'comment': {
+            'body_markdown': comment_text, 'type': 'note', }}
         submission = get_example_submission()
         expected_uri = self.client.get_api_uri_for_submission(
             submission) + '/comments'
