@@ -1,4 +1,3 @@
-# coding=utf-8
 import datetime
 import unittest
 import uuid
@@ -7,7 +6,7 @@ import mock
 import requests
 from six.moves.urllib.parse import quote as url_quote
 
-from client import (
+from .client import (
     BugcrowdClient,
     get_uri_for_bounty_submission,
     _convert_datetime_to_submission_creation_format,
@@ -44,7 +43,6 @@ class BugcrowdClientTest(unittest.TestCase):
         self.api_token = 'api-token-%s' % uuid.uuid4()
         self.client = BugcrowdClient(self.api_token)
         self._bounty = get_example_bounty()
-        self._comments = get_example_comments()
 
     def test_accept_header(self):
         """ tests that the accept header of the session is correct. """
@@ -147,7 +145,7 @@ class BugcrowdClientTest(unittest.TestCase):
         """
         submission = get_example_submission()
         uri = self.client.get_api_uri_for_submission_comments(submission)
-        expected_comments = [self._comments]
+        expected_comments = [get_example_comments()]
         setup_example_comments_response(mocked_method, expected_comments)
         self.assertEqual(self.client.get_comments_for_submission(submission),
                          expected_comments)

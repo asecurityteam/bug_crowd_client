@@ -1,4 +1,3 @@
-# coding=utf-8
 from requests_futures.sessions import FuturesSession
 import six
 from six.moves.urllib.parse import quote as url_quote
