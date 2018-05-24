@@ -63,6 +63,13 @@ class BugcrowdClient(object):
                 for submission in data['submissions']:
                     yield submission
 
+    def get_comments_for_submission(self, submission):
+        """ Yields comments for the given submission or submission uuid. """
+        comments_uri = self.get_api_uri_for_submission_comments(submission)
+        resp = self.session.get(comments_uri).result()
+        resp.raise_for_status()
+        return resp.json()
+
     def get_api_uri(self, path):
         """ Returns the full api uri for the given path. """
         return self.base_uri + url_quote(path)
@@ -78,6 +85,12 @@ class BugcrowdClient(object):
         """ Returns the uri for the given submission or submission uuid. """
         submission_uuid = _get_uuid(submission)
         return self.get_api_uri('submissions/%s' % submission_uuid)
+
+    def get_api_uri_for_submission_comments(self, submission):
+        """ Returns the uri for comments on the given submission or
+        submission uuid.
+        """
+        return self.get_api_uri_for_submission(submission) + '/comments'
 
     def create_submission(self, bounty, submission_fields):
         """ Returns a future request creating a submission in the
@@ -109,7 +122,7 @@ class BugcrowdClient(object):
     def comment_on_submission(self, submission, comment_text,
                               comment_type='note'):
         """ Returns a future request commenting on the given submission. """
-        uri = self.get_api_uri_for_submission(submission) + '/comments'
+        uri = self.get_api_uri_for_submission_comments(submission)
         payload = {
             'comment': {
                 'body_markdown': comment_text,

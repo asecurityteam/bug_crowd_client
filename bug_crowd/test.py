@@ -139,6 +139,18 @@ class BugcrowdClientTest(unittest.TestCase):
             self.assertFalse(offset in seen_offsets)
             seen_offsets.add(offset)
 
+    @mock.patch.object(requests.Session, 'get')
+    def test_get_comments_for_submission(self, mocked_method):
+        """ tests that the get_comments_for_submission method works as expected.
+        """
+        submission = get_example_submission()
+        uri = self.client.get_api_uri_for_submission_comments(submission)
+        expected_comments = [get_example_comments()]
+        setup_example_comments_response(mocked_method, expected_comments)
+        self.assertEqual(self.client.get_comments_for_submission(submission),
+                         expected_comments)
+        mocked_method.assert_called_once_with(uri)
+
     @mock.patch.object(requests.Session, 'post')
     def test_create_submission(self, mocked_method):
         """ tests that the create_submission method works as expected. """
@@ -246,6 +258,13 @@ def setup_example_submission_response(mocked_method):
     return mocked_method
 
 
+def setup_example_comments_response(mocked_method, example_comments):
+    """ sets up an example comments response. """
+    content = [example_comments]
+    setup_mock_response(mocked_method, content)
+    return mocked_method
+
+
 def create_bounty_bounties_response(bounties, **kwargs):
     """ returns a submission response from the given submissions. """
     return {
@@ -281,6 +300,52 @@ def get_example_submission(**kwargs):
         'bounty_code': kwargs.get('bounty_code', 'code-%s' % uuid.uuid4()),
         'reference_number': kwargs.get('reference_number',
                                        'ref-n-%s' % uuid.uuid4()),
+    }
+
+
+def get_example_comments():
+    """ returns example comments on a submission. """
+    user1 = 24601
+    user2 = 42
+    user_ids_to_uuids = {user1: uuid.uuid4(), user2: uuid.uuid4()}
+    user_ids_to_names = {user1: 'Atlassian_bot', user2: 'Cool_McJones_ASE'}
+    return {'tester_messages': [
+        {
+            'body_markdown': 'Issue was fixed!',
+            'created_at': '2018-05-08T08:33:24.732Z',
+            'file_attachments_count': 0,
+            'user_id': user1,
+            'uuid': uuid.uuid4(),
+            'identity': {
+                'uuid': user_ids_to_uuids[user1],
+                'name': user_ids_to_names[user1],
+                'type': 'crowdcontrol_user'}
+        },
+        {
+            'body_markdown': 'Cool! We`ve paid you.',
+            'created_at': '2018-03-19T06:25:09.705Z',
+            'file_attachments_count': 0,
+            'user_id': user1,
+            'uuid': uuid.uuid4(),
+            'identity': {
+                'uuid': user_ids_to_uuids[user1],
+                'name': user_ids_to_names[user1],
+                'type': 'crowdcontrol_user'}
+        }
+    ],
+        'notes': [
+            {
+                'body_markdown': 'I verified the issue!',
+                'created_at': '2018-03-15T19:54:39.714Z',
+                'file_attachments_count': 0,
+                'user_id': user2,
+                'uuid': uuid.uuid4(),
+                'identity': {
+                    'uuid': user_ids_to_uuids[user2],
+                    'name': user_ids_to_names[user2],
+                    'type': 'bugcrowd_ase'}
+            }
+        ]
     }
 
 
