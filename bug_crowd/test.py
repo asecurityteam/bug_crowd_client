@@ -45,7 +45,6 @@ class BugcrowdClientTest(unittest.TestCase):
         self.client = BugcrowdClient(self.api_token)
         self._bounty = get_example_bounty()
         self._comments = get_example_comments()
-        self._submission = get_example_submission()
 
     def test_accept_header(self):
         """ tests that the accept header of the session is correct. """
@@ -308,31 +307,31 @@ def get_example_submission(**kwargs):
 
 def get_example_comments():
     """ returns example comments on a submission. """
+    user1 = 24601
+    user2 = 42
+    user_ids_to_uuids = {user1: uuid.uuid4(), user2: uuid.uuid4()}
+    user_ids_to_names = {user1: 'Atlassian_bot', user2: 'Cool_McJones_ASE'}
     return {'tester_messages': [
         {
             'body_markdown': 'Issue was fixed!',
             'created_at': '2018-05-08T08:33:24.732Z',
             'file_attachments_count': 0,
-            'user_id': 24601,
-            'uuid':
-                '92ca4503-a33f-4e89-9934-ba5a12044c20',
+            'user_id': user1,
+            'uuid': uuid.uuid4(),
             'identity': {
-                'uuid':
-                    '3337a640-d1f6-4520-9864-64809c2ace02',
-                'name': 'Atlassian_bot',
+                'uuid': user_ids_to_uuids[user1],
+                'name': user_ids_to_names[user1],
                 'type': 'crowdcontrol_user'}
         },
         {
             'body_markdown': 'Cool! We`ve paid you.',
             'created_at': '2018-03-19T06:25:09.705Z',
             'file_attachments_count': 0,
-            'user_id': 24601,
-            'uuid':
-                'bce166b5-87bf-4f0d-9816-30ff487bd889',
+            'user_id': user1,
+            'uuid': uuid.uuid4(),
             'identity': {
-                'uuid':
-                    '3337a640-d1f6-4520-9864-64809c2ace02',
-                'name': 'Atlassian_bot',
+                'uuid': user_ids_to_uuids[user1],
+                'name': user_ids_to_names[user1],
                 'type': 'crowdcontrol_user'}
         }
     ],
@@ -340,11 +339,12 @@ def get_example_comments():
             {
                 'body_markdown': 'I verified the issue!',
                 'created_at': '2018-03-15T19:54:39.714Z',
-                'file_attachments_count': 0, 'user_id': 42,
-                'uuid': '289d0162-6312-42ab-b509-efe59ba9a258',
+                'file_attachments_count': 0,
+                'user_id': user2,
+                'uuid': uuid.uuid4(),
                 'identity': {
-                    'uuid': 'ae872cd8-6ddc-468e-adb6-e943fed1246a',
-                    'name': 'coolmcjones_bugcrowd',
+                    'uuid': user_ids_to_uuids[user2],
+                    'name': user_ids_to_names[user2],
                     'type': 'bugcrowd_ase'}
             }
         ]
