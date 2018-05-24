@@ -143,13 +143,13 @@ class BugcrowdClientTest(unittest.TestCase):
 
     @mock.patch.object(requests.Session, 'get')
     def test_get_comments_for_submission(self, mocked_method):
-        """ tests that the get_comments method works as expected.
+        """ tests that the get_comments_for_submission method works as expected.
         """
         submission = get_example_submission()
         uri = self.client.get_api_uri_for_submission_comments(submission)
         expected_comments = [self._comments]
         setup_example_comments_response(mocked_method, expected_comments)
-        self.assertEqual(self.client.get_comments(submission),
+        self.assertEqual(self.client.get_comments_for_submission(submission),
                          expected_comments)
         mocked_method.assert_called_once_with(uri)
 

@@ -64,11 +64,9 @@ class BugcrowdClient(object):
                 for submission in data['submissions']:
                     yield submission
 
-    def get_comments(self, submission):
+    def get_comments_for_submission(self, submission):
         """ Yields comments for the given submission or submission uuid. """
-        submission_uuid = _get_uuid(submission)
-        comments_uri = self.get_api_uri(
-            'submissions/%s/comments' % submission_uuid)
+        comments_uri = self.get_api_uri_for_submission_comments(submission)
         resp = self.session.get(comments_uri).result()
         resp.raise_for_status()
         return resp.json()
