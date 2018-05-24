@@ -61,7 +61,7 @@ class BugcrowdClientTest(unittest.TestCase):
             as expected.
         """
         expected_uri = self.client.base_uri + (
-                'bounties/%s/submissions' % url_quote(self._bounty['uuid']))
+            'bounties/%s/submissions' % url_quote(self._bounty['uuid']))
         uri = self.client.get_api_uri_for_bounty_submissions(self._bounty)
         self.assertEqual(uri, expected_uri)
 
@@ -71,7 +71,7 @@ class BugcrowdClientTest(unittest.TestCase):
         """
         submission = get_example_submission()
         expected_uri = self.client.base_uri + (
-                'submissions/%s' % url_quote(submission['uuid']))
+            'submissions/%s' % url_quote(submission['uuid']))
         self.assertEqual(
             self.client.get_api_uri_for_submission(submission), expected_uri)
 
