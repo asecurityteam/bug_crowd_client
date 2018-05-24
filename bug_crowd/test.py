@@ -1,3 +1,4 @@
+# coding=utf-8
 import datetime
 import unittest
 import uuid
@@ -6,7 +7,7 @@ import mock
 import requests
 from six.moves.urllib.parse import quote as url_quote
 
-from .client import (
+from client import (
     BugcrowdClient,
     get_uri_for_bounty_submission,
     _convert_datetime_to_submission_creation_format,
@@ -43,6 +44,8 @@ class BugcrowdClientTest(unittest.TestCase):
         self.api_token = 'api-token-%s' % uuid.uuid4()
         self.client = BugcrowdClient(self.api_token)
         self._bounty = get_example_bounty()
+        self._comments = get_example_comments()
+        self._submission = get_example_submission()
 
     def test_accept_header(self):
         """ tests that the accept header of the session is correct. """
@@ -61,7 +64,7 @@ class BugcrowdClientTest(unittest.TestCase):
             as expected.
         """
         expected_uri = self.client.base_uri + (
-            'bounties/%s/submissions' % url_quote(self._bounty['uuid']))
+                'bounties/%s/submissions' % url_quote(self._bounty['uuid']))
         uri = self.client.get_api_uri_for_bounty_submissions(self._bounty)
         self.assertEqual(uri, expected_uri)
 
@@ -71,7 +74,7 @@ class BugcrowdClientTest(unittest.TestCase):
         """
         submission = get_example_submission()
         expected_uri = self.client.base_uri + (
-            'submissions/%s' % url_quote(submission['uuid']))
+                'submissions/%s' % url_quote(submission['uuid']))
         self.assertEqual(
             self.client.get_api_uri_for_submission(submission), expected_uri)
 
@@ -138,6 +141,18 @@ class BugcrowdClientTest(unittest.TestCase):
             offset = kwargs['params']['offset']
             self.assertFalse(offset in seen_offsets)
             seen_offsets.add(offset)
+
+    @mock.patch.object(requests.Session, 'get')
+    def test_get_comments_for_submission(self, mocked_method):
+        """ tests that the get_comments method works as expected.
+        """
+        submission = get_example_submission()
+        uri = self.client.get_api_uri_for_submission_comments(submission)
+        expected_comments = [self._comments]
+        setup_example_comments_response(mocked_method, expected_comments)
+        self.assertEqual(self.client.get_comments(submission),
+                         expected_comments)
+        mocked_method.assert_called_once_with(uri)
 
     @mock.patch.object(requests.Session, 'post')
     def test_create_submission(self, mocked_method):
@@ -246,6 +261,13 @@ def setup_example_submission_response(mocked_method):
     return mocked_method
 
 
+def setup_example_comments_response(mocked_method, example_comments):
+    """ sets up an example comments response. """
+    content = [example_comments]
+    setup_mock_response(mocked_method, content)
+    return mocked_method
+
+
 def create_bounty_bounties_response(bounties, **kwargs):
     """ returns a submission response from the given submissions. """
     return {
@@ -281,6 +303,51 @@ def get_example_submission(**kwargs):
         'bounty_code': kwargs.get('bounty_code', 'code-%s' % uuid.uuid4()),
         'reference_number': kwargs.get('reference_number',
                                        'ref-n-%s' % uuid.uuid4()),
+    }
+
+
+def get_example_comments():
+    """ returns example comments on a submission. """
+    return {'tester_messages': [
+        {
+            'body_markdown': 'Issue was fixed!',
+            'created_at': '2018-05-08T08:33:24.732Z',
+            'file_attachments_count': 0,
+            'user_id': 24601,
+            'uuid':
+                '92ca4503-a33f-4e89-9934-ba5a12044c20',
+            'identity': {
+                'uuid':
+                    '3337a640-d1f6-4520-9864-64809c2ace02',
+                'name': 'Atlassian_bot',
+                'type': 'crowdcontrol_user'}
+        },
+        {
+            'body_markdown': 'Cool! We`ve paid you.',
+            'created_at': '2018-03-19T06:25:09.705Z',
+            'file_attachments_count': 0,
+            'user_id': 24601,
+            'uuid':
+                'bce166b5-87bf-4f0d-9816-30ff487bd889',
+            'identity': {
+                'uuid':
+                    '3337a640-d1f6-4520-9864-64809c2ace02',
+                'name': 'Atlassian_bot',
+                'type': 'crowdcontrol_user'}
+        }
+    ],
+        'notes': [
+            {
+                'body_markdown': 'I verified the issue!',
+                'created_at': '2018-03-15T19:54:39.714Z',
+                'file_attachments_count': 0, 'user_id': 42,
+                'uuid': '289d0162-6312-42ab-b509-efe59ba9a258',
+                'identity': {
+                    'uuid': 'ae872cd8-6ddc-468e-adb6-e943fed1246a',
+                    'name': 'coolmcjones_bugcrowd',
+                    'type': 'bugcrowd_ase'}
+            }
+        ]
     }
 
 
