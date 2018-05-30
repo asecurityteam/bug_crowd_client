@@ -1,0 +1,35 @@
+CHANGES
+=======
+
+2.1.0
+-----
+
+* Sem-Ver: feature Add support for fetching comments of a submission
+* Sem-ver: bugfix Update create submission example to use utcnow instead of now. Please note that the bugcrowd api doesn't currently accept submissions with a submitted\_at field ahead of the current (utc) time
+* Sem-ver: bugfix Update create submission example to use an instance of datetime.datetime
+* Sem-Ver: bugfix Update the readme example for updating a submission example to use vrt\_id as required by the v3 api
+
+2.0.0
+-----
+
+* Sem-Ver: api-break Use version 3 of the Bugcrowd api
+* Update the LICENSE file to be copyright of Atlassian Pty Ltd
+* Fill in more packaging details in setup.cfg
+* Add travis ci status information to the readme
+
+1.0.0
+-----
+
+* Enable Travis CI
+* Sem-Ver: feature create\_submission now converts the submitted\_at field into isoformat where needed
+* Sem-Ver: bugfix Only request the number of submission pages required
+* Sem-Ver: bugfix transition\_submission now checks if the duplicate\_of field is required that it is provided
+* Sem-Ver: bugfix Fix checking the required fields when creating a submission
+* Add tests
+* Sem-Ver: bugfix Fix the get\_submissions method to return submissions from the initial fetch
+* Sem-Ver: bugfix \_convert\_datetime\_to\_submission\_creation\_format should return the date time in an isoformat
+* Add pypi information to the readme
+* Do not mutate params given to the get\_submissions method
+* Add example usage to the readme
+* Add the code
+* Initial commit
