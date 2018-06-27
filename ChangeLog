@@ -1,9 +1,16 @@
 CHANGES
 =======
 
+2.1.1
+-----
+
+* Update release notes for version 2.1.1
+* Sem-ver: bugfix Fix obtaining submissions for a bounty that has no submissions
+
 2.1.0
 -----
 
+* Update release notes for version 2.1.0 and update the AUTHORS file
 * Sem-Ver: feature Add support for fetching comments of a submission
 * Sem-ver: bugfix Update create submission example to use utcnow instead of now. Please note that the bugcrowd api doesn't currently accept submissions with a submitted\_at field ahead of the current (utc) time
 * Sem-ver: bugfix Update create submission example to use an instance of datetime.datetime
