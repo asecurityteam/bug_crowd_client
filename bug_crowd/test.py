@@ -116,6 +116,19 @@ class BugcrowdClientTest(unittest.TestCase):
         mocked_method.assert_called_once_with(mock.ANY, params=mock.ANY)
 
     @mock.patch.object(requests.Session, 'get')
+    def test_get_submissions_retrieval_no_submissions(self, mocked_method):
+        """ tests that the get_submissions method correctly retrieves
+            submissions when there are no submissions in a bounty program.
+        """
+        expected_submissions = []
+        resp = create_bounty_submissions_response(expected_submissions)
+        del resp['submissions']
+        content = [resp]
+        setup_mock_response(mocked_method, content)
+        submissions = list(self.client.get_submissions(self._bounty))
+        self.assertEqual(submissions, expected_submissions)
+
+    @mock.patch.object(requests.Session, 'get')
     def test_get_submissions_retrieval_multiple_pages(self, mocked_method):
         """ tests that the get_submissions method correctly retrieves
             submissions when there are multiple pages of submissions.
