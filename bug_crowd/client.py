@@ -44,7 +44,7 @@ class BugcrowdClient(object):
             submissions_uri, params=params).result()
         initial_response.raise_for_status()
         data = initial_response.json()
-        submissions += data['submissions']
+        submissions += data.get('submissions', [])
         total = data['meta']['count']
         total_hits = data['meta']['total_hits']
         for submission in submissions:
