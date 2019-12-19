@@ -89,7 +89,7 @@ class BugcrowdClientTest(unittest.TestCase):
         """ tests that the default parameters used in the get_submissions
             method match those expected.
         """
-        expected_params = {'sort': 'newest', 'offset': 0}
+        expected_params = {'sort': 'newest', 'offset': 0, 'limit': 25}
         setup_example_submission_response(mocked_method)
         uri = self.client.get_api_uri_for_bounty_submissions(self._bounty)
         list(self.client.get_submissions(self._bounty))
@@ -98,7 +98,7 @@ class BugcrowdClientTest(unittest.TestCase):
     @mock.patch.object(requests.Session, 'get')
     def test_get_submissions_uses_given_params(self, mocked_method):
         """ tests that params provided to get_submissions are used. """
-        expected_params = {'sort': 'newest', 'offset': 25}
+        expected_params = {'sort': 'newest', 'offset': 25, 'limit': 100}
         setup_example_submission_response(mocked_method)
         list(self.client.get_submissions(self._bounty, params=expected_params))
         mocked_method.assert_called_once_with(mock.ANY, params=expected_params)

@@ -37,9 +37,10 @@ class BugcrowdClient(object):
         params = kwargs.get('params', None)
         submissions_uri = self.get_api_uri_for_bounty_submissions(bounty)
         submissions = []
-        step = 25
         if params is None:
             params = {'sort': 'newest', 'offset': 0}
+        step = params.get('limit', 25)
+        params['limit'] = step
         initial_response = self.session.get(
             submissions_uri, params=params).result()
         initial_response.raise_for_status()
