@@ -1,6 +1,14 @@
 CHANGES
 =======
 
+2.2.0
+-----
+
+* Update release notes for version 2.2.0
+* Sem-Ver: feature Increase the default number of submissions to retrieve at time to 250
+* Sem-Ver: feature support specifying a limit of submissions to retrieve at a time
+* Sem-ver: bugfix Add a CODEOWNERS file
+
 2.1.1
 -----
 
