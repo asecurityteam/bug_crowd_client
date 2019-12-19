@@ -89,7 +89,7 @@ class BugcrowdClientTest(unittest.TestCase):
         """ tests that the default parameters used in the get_submissions
             method match those expected.
         """
-        expected_params = {'sort': 'newest', 'offset': 0, 'limit': 25}
+        expected_params = {'sort': 'newest', 'offset': 0, 'limit': 250}
         setup_example_submission_response(mocked_method)
         uri = self.client.get_api_uri_for_bounty_submissions(self._bounty)
         list(self.client.get_submissions(self._bounty))
@@ -133,14 +133,14 @@ class BugcrowdClientTest(unittest.TestCase):
         """ tests that the get_submissions method correctly retrieves
             submissions when there are multiple pages of submissions.
         """
-        num_submissions = 26
+        num_submissions = 260
         expected_submissions = [get_example_submission(uuid=str(x))
                                 for x in range(0, num_submissions)]
         json_res_one = create_bounty_submissions_response(
-            expected_submissions[:-1], count=25, total_hits=num_submissions)
+            expected_submissions[:-1], count=250, total_hits=num_submissions)
         json_res_two = create_bounty_submissions_response(
-            expected_submissions[-1:], count=1, total_hits=num_submissions,
-            offset=25)
+            expected_submissions[-1:], count=10, total_hits=num_submissions,
+            offset=250)
         setup_mock_response(mocked_method, [json_res_one, json_res_two])
         submissions = list(self.client.get_submissions(self._bounty))
         self.assertEqual(submissions, expected_submissions)

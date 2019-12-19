@@ -39,7 +39,7 @@ class BugcrowdClient(object):
         submissions = []
         if params is None:
             params = {'sort': 'newest', 'offset': 0}
-        step = params.get('limit', 25)
+        step = params.get('limit', 250)
         params['limit'] = step
         initial_response = self.session.get(
             submissions_uri, params=params).result()
