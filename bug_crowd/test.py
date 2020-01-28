@@ -177,7 +177,7 @@ class BugcrowdClientTest(unittest.TestCase):
             if isinstance(submitted_at, datetime.datetime):
                 fields.update(submitted_at=submitted_at.isoformat())
             mocked_method.assert_called_with(
-                expected_uri, json={'submission': fields})
+                expected_uri, json={'submission': fields}, data=None)
 
     def test_create_submission_checks_required_fields(self):
         """ tests that the create_submission method checks that required
@@ -196,7 +196,7 @@ class BugcrowdClientTest(unittest.TestCase):
         expected_uri = self.client.get_api_uri_for_submission(submission)
         self.client.update_submission(submission, **fields)
         mocked_method.assert_called_once_with(
-            expected_uri, json={'submission': fields})
+            expected_uri, json={'submission': fields}, data=None)
 
     @mock.patch.object(requests.Session, 'post')
     def test_comment_on_submission(self, mocked_method):
@@ -208,7 +208,8 @@ class BugcrowdClientTest(unittest.TestCase):
         expected_uri = self.client.get_api_uri_for_submission(
             submission) + '/comments'
         self.client.comment_on_submission(submission, comment_text)
-        mocked_method.assert_called_once_with(expected_uri, json=expected_json)
+        mocked_method.assert_called_once_with(
+            expected_uri, json=expected_json, data=None)
 
     @mock.patch.object(requests.Session, 'post')
     def test_comment_on_submission_uses_comment_type(self, mocked_method):
@@ -231,7 +232,7 @@ class BugcrowdClientTest(unittest.TestCase):
             submission) + '/transition'
         self.client.transition_submission(submission, expected_state)
         mocked_method.assert_called_once_with(
-            expected_uri, json={'substate': expected_state})
+            expected_uri, json={'substate': expected_state}, data=None)
 
     @mock.patch.object(requests.Session, 'post')
     def test_transition_submission_uses_duplicate_of(self, mocked_method):
@@ -241,7 +242,7 @@ class BugcrowdClientTest(unittest.TestCase):
         self.client.transition_submission(submission, expected_state,
                                           duplicate_of=duplicate_of)
         mocked_method.assert_called_once_with(
-            mock.ANY,
+            mock.ANY, data=None,
             json={'substate': expected_state, 'duplicate_of': duplicate_of})
 
     @mock.patch.object(requests.Session, 'post')
