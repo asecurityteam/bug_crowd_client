@@ -71,6 +71,13 @@ class BugcrowdClient(object):
         resp.raise_for_status()
         return resp.json()
 
+    def get_attachments_on_submission(self, submission):
+        """ Yields attachments for the given submission or submission uuid. """
+        attachments_uri = self.get_api_uri_for_submission_attachments(submission)
+        resp = self.session.get(attachments_uri).result()
+        resp.raise_for_status()
+        return resp.json()
+
     def get_api_uri(self, path):
         """ Returns the full api uri for the given path. """
         return self.base_uri + url_quote(path)
@@ -92,6 +99,12 @@ class BugcrowdClient(object):
         submission uuid.
         """
         return self.get_api_uri_for_submission(submission) + '/comments'
+
+    def get_api_uri_for_submission_attachments(self, submission):
+        """ Returns the uri for attachemnts on the given submission or
+        submission uuid.
+        """
+        return self.get_api_uri_for_submission(submission) + '/file_attachments'
 
     def create_submission(self, bounty, submission_fields):
         """ Returns a future request creating a submission in the

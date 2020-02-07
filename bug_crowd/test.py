@@ -65,6 +65,15 @@ class BugcrowdClientTest(unittest.TestCase):
         uri = self.client.get_api_uri_for_bounty_submissions(self._bounty)
         self.assertEqual(uri, expected_uri)
 
+    def test_get_api_uri_for_submission_attachments(self):
+        """ tests that the test_get_api_uri_for_submission_attachments method works
+            as expected.
+        """
+        expected_uri = self.client.base_uri + (
+            'submissions/%s/file_attachments' % url_quote(self._bounty['uuid']))
+        uri = self.client.get_api_uri_for_submission_attachments(self._bounty)
+        self.assertEqual(expected_uri, uri)
+
     def test_get_api_uri_for_submission(self):
         """ tests that the get_api_uri_for_submission method works
             as expected.
