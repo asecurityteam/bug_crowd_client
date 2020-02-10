@@ -65,6 +65,16 @@ class BugcrowdClientTest(unittest.TestCase):
         uri = self.client.get_api_uri_for_bounty_submissions(self._bounty)
         self.assertEqual(uri, expected_uri)
 
+    def test_get_api_uri_for_submission_attachments(self):
+        """ tests that the test_get_api_uri_for_submission_attachments method works
+            as expected.
+        """
+        expected_uri = self.client.base_uri + (
+            'submissions/%s/file_attachments' %
+            url_quote(self._bounty['uuid']))
+        uri = self.client.get_api_uri_for_submission_attachments(self._bounty)
+        self.assertEqual(expected_uri, uri)
+
     def test_get_api_uri_for_submission(self):
         """ tests that the get_api_uri_for_submission method works
             as expected.
@@ -162,6 +172,20 @@ class BugcrowdClientTest(unittest.TestCase):
         setup_example_comments_response(mocked_method, expected_comments)
         self.assertEqual(self.client.get_comments_for_submission(submission),
                          expected_comments)
+        mocked_method.assert_called_once_with(uri)
+
+    @mock.patch.object(requests.Session, 'get')
+    def test_get_attachments_for_submission(self, mocked_method):
+        """ tests that the get_attachments_for_submission method
+        works as expected.
+        """
+        submission = get_example_submission()
+        uri = self.client.get_api_uri_for_submission_attachments(submission)
+        expected_attachments = get_example_attachments()
+        setup_example_comments_response(mocked_method, expected_attachments)
+        self.assertEqual(self.client.
+                         get_attachments_for_submission(submission),
+                         expected_attachments)
         mocked_method.assert_called_once_with(uri)
 
     @mock.patch.object(requests.Session, 'post')
@@ -358,6 +382,31 @@ def get_example_comments():
                     'uuid': user_ids_to_uuids[user2],
                     'name': user_ids_to_names[user2],
                     'type': 'bugcrowd_ase'}
+            }
+        ]
+    }
+
+
+def get_example_attachments():
+    return {
+        'file_attachments': [
+            {
+                'file_name': 'Screenshot 2020-02-04 at 20.26.57.png',
+                'file_size': 817712,
+                'file_type': 'image/png',
+                's3_signed_url': 'https://s3.com/attachments/'
+            },
+            {
+                'file_name': 'Screenshot 2020-02-04 at 20.43.11.png',
+                'file_size': 332997,
+                'file_type': 'image/png',
+                's3_signed_url': 'https://s3.com/attachments/'
+            },
+            {
+                'file_name': 'Screenshot 2020-02-04 at 20.41.44.png',
+                'file_size': 719004,
+                'file_type': 'image/png',
+                's3_signed_url': 'https://s3.com/attachments/'
             }
         ]
     }
