@@ -65,14 +65,18 @@ class BugcrowdClient(object):
                     yield submission
 
     def get_comments_for_submission(self, submission):
-        """ Returns comment information for the given submission or submission uuid. """
+        """ Returns comment information for the given submission or
+        submission uuid.
+        """
         comments_uri = self.get_api_uri_for_submission_comments(submission)
         resp = self.session.get(comments_uri).result()
         resp.raise_for_status()
         return resp.json()
 
     def get_attachments_for_submission(self, submission):
-        """ Returns attachment information for the given submission or submission uuid. """
+        """ Returns attachment information for the given submission or
+        submission uuid.
+        """
         attach_uri = self.get_api_uri_for_submission_attachments(submission)
         resp = self.session.get(attach_uri).result()
         resp.raise_for_status()
