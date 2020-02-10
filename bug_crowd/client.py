@@ -71,7 +71,7 @@ class BugcrowdClient(object):
         resp.raise_for_status()
         return resp.json()
 
-    def get_attachments_on_submission(self, submission):
+    def get_attachments_for_submission(self, submission):
         """ Yields attachments for the given submission or submission uuid. """
         attachments_uri = self.get_api_uri_for_submission_attachments(submission)
         resp = self.session.get(attachments_uri).result()

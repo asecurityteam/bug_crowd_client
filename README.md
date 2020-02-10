@@ -110,6 +110,23 @@ pip install bug-crowd-api-client
     resp.raise_for_status()
 ```
 
+##### To get file attachments on a bug bounty submission
+
+```python
+    from bug_crowd.client import BugcrowdClient
+
+    client = BugcrowdClient('API_TOKEN')
+    bounty = client.get_bounties()[0]
+    submission = client.get_submissions(bounty)[0]
+
+    resp = client.get_attachments_for_submission(
+        submission,
+    ).result()
+    resp.raise_for_status()
+```
+
+
+
 [travis-status-image]: https://secure.travis-ci.org/asecurityteam/bug_crowd_client.svg?branch=master
 [travis]: http://travis-ci.org/asecurityteam/bug_crowd_client?branch=master
 
