@@ -1,6 +1,13 @@
 CHANGES
 =======
 
+3.0.0
+-----
+
+* Update release notes for version 2.2.0 and update the AUTHORS file
+* Sem-Ver: feature add support for obtaining information on submission attachments
+* Sem-Ver: api-break Update to using a version of requests-futures >= 1.0.0 < 1.1.0
+
 2.2.0
 -----
 
