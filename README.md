@@ -119,10 +119,7 @@ pip install bug-crowd-api-client
     bounty = client.get_bounties()[0]
     submission = client.get_submissions(bounty)[0]
 
-    resp = client.get_attachments_for_submission(
-        submission,
-    )
-    resp.raise_for_status()
+    attachments = client.get_attachments_for_submission(submission)
 ```
 
 
