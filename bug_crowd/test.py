@@ -392,19 +392,19 @@ def get_example_attachments():
                 'file_name': 'Screenshot 2020-02-04 at 20.26.57.png',
                 'file_size': 817712,
                 'file_type': 'image/png',
-                's3_signed_url': 'https://bugcrowd-attachments-us-east-1-production.s3.amazonaws.com/attachments/accepted/9158a630-9d6f-44eb-bc62-9d2e0393ef73/Screenshot%202020-02-04%20at%2020.26.57.png?response-content-disposition=attachment&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJH4NERGAPHTPIWGA%2F20200207%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20200207T214432Z&X-Amz-Expires=10&X-Amz-SignedHeaders=host&X-Amz-Signature=42e82d31cf93e37bdbad8ffcb93b517ea4f251e7cf9d8afd95d6f15879bda9ae'
+                's3_signed_url': 'https://s3.com/attachments/'
             },
             {
                 'file_name': 'Screenshot 2020-02-04 at 20.43.11.png',
                 'file_size': 332997,
                 'file_type': 'image/png',
-                's3_signed_url': 'https://bugcrowd-attachments-us-east-1-production.s3.amazonaws.com/attachments/accepted/93d9e078-dc27-4c7e-85ec-61579099f6f9/Screenshot%202020-02-04%20at%2020.43.11.png?response-content-disposition=attachment&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJH4NERGAPHTPIWGA%2F20200207%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20200207T214432Z&X-Amz-Expires=10&X-Amz-SignedHeaders=host&X-Amz-Signature=19afeb0c1067911a8525957e4254121abf5ac8e464b796f67025dbf7f3a6e2c6'
+                's3_signed_url': 'https://s3.com/attachments/'
             },
             {
                 'file_name': 'Screenshot 2020-02-04 at 20.41.44.png',
                 'file_size': 719004,
                 'file_type': 'image/png',
-                's3_signed_url': 'https://bugcrowd-attachments-us-east-1-production.s3.amazonaws.com/attachments/accepted/80ee1157-1e5b-44a1-9768-720df6f94971/Screenshot%202020-02-04%20at%2020.41.44.png?response-content-disposition=attachment&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJH4NERGAPHTPIWGA%2F20200207%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20200207T214432Z&X-Amz-Expires=10&X-Amz-SignedHeaders=host&X-Amz-Signature=a2f7fde2707973eb7a7bb855192039d0980ab31b1b50c293d42eb677faa488a5'
+                's3_signed_url': 'https://s3.com/attachments/'
             }
         ]
     }
