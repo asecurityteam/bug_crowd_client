@@ -104,8 +104,7 @@ class BugcrowdClient(object):
         """ Returns the uri for attachemnts on the given submission or
         submission uuid.
         """
-        return self.get_api_uri_for_submission(submission) +
-        '/file_attachments'
+        return self.get_api_uri_for_submission(submission) + '/file_attachments'
 
     def create_submission(self, bounty, submission_fields):
         """ Returns a future request creating a submission in the
