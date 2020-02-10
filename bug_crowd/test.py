@@ -70,7 +70,8 @@ class BugcrowdClientTest(unittest.TestCase):
             as expected.
         """
         expected_uri = self.client.base_uri + (
-            'submissions/%s/file_attachments' % url_quote(self._bounty['uuid']))
+            'submissions/%s/file_attachments' %
+            url_quote(self._bounty['uuid']))
         uri = self.client.get_api_uri_for_submission_attachments(self._bounty)
         self.assertEqual(expected_uri, uri)
 
@@ -182,11 +183,10 @@ class BugcrowdClientTest(unittest.TestCase):
         uri = self.client.get_api_uri_for_submission_attachments(submission)
         expected_attachments = get_example_attachments()
         setup_example_comments_response(mocked_method, expected_attachments)
-        self.assertEqual(self.client.get_attachments_for_submission(submission),
+        self.assertEqual(self.client.
+                         get_attachments_for_submission(submission),
                          expected_attachments)
         mocked_method.assert_called_once_with(uri)
-
-
 
     @mock.patch.object(requests.Session, 'post')
     def test_create_submission(self, mocked_method):
@@ -385,6 +385,7 @@ def get_example_comments():
         ]
     }
 
+
 def get_example_attachments():
     return {
         'file_attachments': [
@@ -408,7 +409,6 @@ def get_example_attachments():
             }
         ]
     }
-
 
 
 def setup_mock_response(mocked_method, json_contents, headers=None):
