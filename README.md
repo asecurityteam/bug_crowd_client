@@ -121,7 +121,7 @@ pip install bug-crowd-api-client
 
     resp = client.get_attachments_for_submission(
         submission,
-    ).result()
+    )
     resp.raise_for_status()
 ```
 
