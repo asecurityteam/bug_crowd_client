@@ -1,10 +1,10 @@
 import datetime
 import unittest
 import uuid
+from unittest import mock
+from urllib.parse import quote as url_quote
 
-import mock
 import requests
-from six.moves.urllib.parse import quote as url_quote
 
 from .client import (
     BugcrowdClient,

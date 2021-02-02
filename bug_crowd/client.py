@@ -1,11 +1,11 @@
+from urllib.parse import quote as url_quote
+
 from requests_futures.sessions import FuturesSession
-import six
-from six.moves.urllib.parse import quote as url_quote
 
 
 def _get_uuid(obj):
     """ returns the uuid of a bounty or submission object. """
-    if isinstance(obj, six.string_types):
+    if isinstance(obj, str):
         return obj
     return obj['uuid']
 
