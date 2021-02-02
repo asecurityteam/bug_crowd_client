@@ -66,8 +66,8 @@ class BugcrowdClientTest(unittest.TestCase):
         self.assertEqual(uri, expected_uri)
 
     def test_get_api_uri_for_submission_attachments(self):
-        """ tests that the test_get_api_uri_for_submission_attachments method works
-            as expected.
+        """ tests that the test_get_api_uri_for_submission_attachments method
+            works as expected.
         """
         expected_uri = self.client.base_uri + (
             'submissions/%s/file_attachments' %
@@ -164,7 +164,8 @@ class BugcrowdClientTest(unittest.TestCase):
 
     @mock.patch.object(requests.Session, 'get')
     def test_get_comments_for_submission(self, mocked_method):
-        """ tests that the get_comments_for_submission method works as expected.
+        """ tests that the get_comments_for_submission method works as
+            expected.
         """
         submission = get_example_submission()
         uri = self.client.get_api_uri_for_submission_comments(submission)
@@ -382,8 +383,8 @@ def get_example_comments():
                     'uuid': user_ids_to_uuids[user2],
                     'name': user_ids_to_names[user2],
                     'type': 'bugcrowd_ase'}
-            }
-        ]
+            },
+    ]
     }
 
 
