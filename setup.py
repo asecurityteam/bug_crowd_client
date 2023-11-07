@@ -3,7 +3,7 @@ from setuptools import setup
 
 
 setup(
-    setup_requires=['pbr==5.9.0'],
+    setup_requires=['pbr==6.0.0'],
     pbr=True,
     platforms=['any'],
     zip_safe=False,
