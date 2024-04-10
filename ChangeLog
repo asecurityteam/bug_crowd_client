@@ -37,12 +37,10 @@ CHANGES
 * Sem-Ver: api-break Use version 3 of the Bugcrowd api
 * Update the LICENSE file to be copyright of Atlassian Pty Ltd
 * Fill in more packaging details in setup.cfg
-* Add travis ci status information to the readme
 
 1.0.0
 -----
 
-* Enable Travis CI
 * Sem-Ver: feature create\_submission now converts the submitted\_at field into isoformat where needed
 * Sem-Ver: bugfix Only request the number of submission pages required
 * Sem-Ver: bugfix transition\_submission now checks if the duplicate\_of field is required that it is provided
